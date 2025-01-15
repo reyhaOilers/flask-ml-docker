@@ -1,0 +1,26 @@
+name: Docker Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Build the Docker image
+      run: docker build . -t reyhaOilers/flask-ml-docker
+
+    - name: Push the Docker image
+      run: docker push reyhaOilers/flask-ml-docker
